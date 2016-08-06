@@ -15,7 +15,17 @@ namespace HairSaloon.Objects
       string result = newStylist.GetName();
 
      Assert.Equal("Bill", result);
+    }
 
+    [Fact]
+    public void Test2_SetName()
+    {
+      Stylist newStylist = new Stylist("Bill");
+      newStylist.SetName("Bill");
+
+      string result = newStylist.GetName();
+
+      Assert.Equal("Bill", result);
     }
 
 

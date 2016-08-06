@@ -19,10 +19,15 @@ namespace HairSaloon
   {
     return _name;
   }
-  
+
   public int GetId()
   {
     return _id;
+  }
+
+  public void SetName(string newName)
+  {
+    _name = newName;
   }
 
   public void Save()
