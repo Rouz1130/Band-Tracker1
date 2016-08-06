@@ -174,9 +174,23 @@ namespace HairSaloon
      }
    }
 
+   public void Delete()
+      {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+        SqlCommand cmd = new SqlCommand ("DELETE FROM Stylists WHERE id =@stylistId;", conn);
 
-
-
+        SqlParameter stylistIdParameter = new SqlParameter();
+        stylistIdParameter.ParameterName = "@stylistId";
+        stylistIdParameter.Value=this.GetId();
+        Console.WriteLine(this.GetId());
+        cmd.Parameters.Add(stylistIdParameter);
+        cmd.ExecuteNonQuery();
+        if (conn !=null)
+        {
+          conn.Close();
+        }
+      }
 
   public static void DeleteAll()
   {
