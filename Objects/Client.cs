@@ -10,7 +10,7 @@ namespace HairSaloon.Objects
     private int _id;
     private string _name;
     private int _stylist_id;
-    //constructor
+
     public Client(string Name, int stylist_id ,int Id = 0)
     {
       _id = Id;
@@ -22,6 +22,12 @@ namespace HairSaloon.Objects
     {
       return _stylist_id;
     }
+
+    public void SetStylistId(int id)
+    {
+      _stylist_id = id;
+    }
+
 
     public string GetName()
     {

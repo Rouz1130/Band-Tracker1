@@ -14,7 +14,7 @@ namespace HairSaloon.Objects
 
     public ClientTest()
    {
-     DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=hair_Saloon_test;Integrated Security=SSPI;";
+     DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=hair_saloon_test;Integrated Security=SSPI;";
    }
 
 
@@ -22,11 +22,24 @@ namespace HairSaloon.Objects
     public void Test1_ClientGetName()
     {
       // arrange
-      Client newClient = new Client("Russ", 1);
+      Client newClient = new Client("Bill", 1);
       // act
       string result = newClient.GetName();
 
-      Assert.Equal("Russ", result);
+      Assert.Equal("Bill", result);
     }
+
+    [Fact]
+  public void Test2_SetName()
+  {
+    // arrange
+    Client newClient = new Client("Bobby",2);
+    newClient.SetName("Bobby");
+    // act
+    string result = newClient.GetName();
+
+    Assert.Equal("Bobby", result);
+  }
+
   }
 }
