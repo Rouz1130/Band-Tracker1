@@ -2,35 +2,42 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System;
 
-namespace HairSaloon
+namespace HairSaloon.Objects
 {
   public class Client
   {
-    private string _clientName;
+
     private int _id;
-
-
-    public Client(string clientName, int id=0)
+    private string _name;
+    private int _stylist_id;
+    //constructor
+    public Client(string Name, int stylist_id ,int Id = 0)
     {
-      _clientName = clientName;
-      _id = id;
+      _id = Id;
+      _name = Name;
+      _stylist_id = stylist_id;
     }
 
-    public string GetClientName()
+    public int GetStylistId()
     {
-      return _clientName;
+      return _stylist_id;
     }
 
-    public int GetId()
+    public string GetName()
     {
-      return _id;
+      return _name;
     }
 
-    public void SetName(string newClientName)
-    {
-      _clientName = newClientName;
-    }
+    public int GetClient_id()
+     {
+       return _id;
+     }
 
+
+    public void SetName(string newName)
+    {
+      _name = newName;
+    }
 
     public override bool Equals(System.Object otherClient)
     {
@@ -41,8 +48,15 @@ namespace HairSaloon
       else
       {
         Client newClient = (Client) otherClient;
-        return this.GetClientName().Equals(newClient.GetClientName());
+        Console.WriteLine("this.GetName()=" + this.GetName());
+        Console.WriteLine("newClient.GetName()=" + newClient.GetName());
+        return this.GetName() == newClient.GetName();
       }
     }
-   }
+
+    public override int GetHashCode()
+    {
+      return this.GetName().GetHashCode();
+    }
   }
+}
