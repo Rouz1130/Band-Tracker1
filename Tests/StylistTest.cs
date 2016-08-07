@@ -61,7 +61,7 @@ namespace HairSaloon.Objects
     Assert.Equal(findStylist, newStylist);
   }
 
-    
+
     [Fact]
     public void Test6_UpdateStylist_Database()
     {

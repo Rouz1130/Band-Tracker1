@@ -58,14 +58,14 @@ namespace HairSaloon.Objects
    [Fact]
       public void Test5_Find_FindsClientInDatabase()
       {
-        //Arrange
+
         Client testClient = new Client("Bill", 1);
         testClient.Save();
 
-        //Act
+
         Client foundClient = Client.Find(testClient.GetClient_id());
 
-        //Assert
+
         Assert.Equal(testClient, foundClient);
       }
 
