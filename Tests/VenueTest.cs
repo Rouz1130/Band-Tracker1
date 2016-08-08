@@ -38,6 +38,19 @@ namespace BandTracker.Objects
     Assert.Equal("Skydome", result);
   }
 
+  [Fact]
+  public void Test3_SaveVenueName()
+  {
+
+  Venue newVenue = new Venue("ShowBox");
+  newVenue.Save();
+
+  List<Venue> allVenues = Venue.GetAll();
+  Console.WriteLine(allVenues.Count);
+
+  Assert.Equal(newVenue, allVenues[0]);
+  }
+
 
 
 

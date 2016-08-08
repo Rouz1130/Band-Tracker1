@@ -49,6 +49,58 @@ namespace BandTracker.Objects
       return this.GetVenueName().GetHashCode();
     }
 
+    public static List<Venue> GetAll()
+    {
+      List<Venue> allVenues = new List<Venue>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT * FROM venues;", conn);
+      SqlDataReader rdr  = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int venueId = rdr.GetInt32(0);
+        string venueName = rdr.GetString(1);
+        Venue newVenue = new Venue(venueName, venueId);
+        allVenues.Add(newVenue);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allVenues;
+    }
+
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO venues(Name)OUTPUT INSERTED.id VALUES (@venuName);", conn );
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@venuName";
+      nameParameter.Value = this.GetVenueName();
+      cmd.Parameters.Add(nameParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr !=null)
+      {
+        rdr.Close();
+      }
+      if (conn !=null)
+      {
+        conn.Close();
+      }
+    }
 
   }
 }
