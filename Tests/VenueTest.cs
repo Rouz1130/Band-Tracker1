@@ -26,13 +26,13 @@ namespace BandTracker.Objects
    }
 
 
-   // [Fact]
+
   public void Test2_SetVenueName()
   {
-    // arrange
+
     Venue newVenue = new Venue("Skydome");
     newVenue.SetName("Skydome");
-    // act
+
     string result = newVenue.GetVenueName();
 
     Assert.Equal("Skydome", result);
@@ -52,6 +52,18 @@ namespace BandTracker.Objects
   }
 
 
+  [Fact]
+    public void Test4_FindId()
+    {
+      Venue newVenue = new Venue ("ShowBox");
+      newVenue.Save();
+
+      Venue findVenue = Venue.Find(newVenue.GetId());
+
+      Assert.Equal(findVenue, newVenue);
+    }
+
+    
 
 
   }
