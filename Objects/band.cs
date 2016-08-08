@@ -75,5 +75,32 @@ namespace BandTracker.Objects
       }
     }
 
-  }
+    public static List<Band> GetAll()
+ {
+   List<Band> allBands = new List<Band>{};
+
+   SqlConnection conn = DB.Connection();
+   conn.Open();
+   SqlCommand cmd = new SqlCommand("SELECT * FROM bands;", conn);
+   SqlDataReader rdr  = cmd.ExecuteReader();
+
+   while(rdr.Read())
+   {
+     int studentId = rdr.GetInt32(0);
+     string studentName = rdr.GetString(1);
+     Band newBand = new Band(studentName, studentId);
+     allBands.Add(newBand);
+   }
+   if (rdr != null)
+   {
+     rdr.Close();
+   }
+   if (conn != null)
+   {
+     conn.Close();
+   }
+   return allBands;
+ }
+
+}
 }

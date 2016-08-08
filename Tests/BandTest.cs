@@ -34,11 +34,23 @@ namespace BandTracker.Objects
       newBand.SetName("Nirvana");
 
       string result = newBand.GetName();
-      
+
       Assert.Equal("Nirvana", result);
     }
 
 
+  [Fact]
+     public void Test3_Save()
+     {
+
+       Band testBand = new Band("Beatles");
+
+       testBand.Save();
+       List<Band> result = Band.GetAll();
+       List<Band> testList = new List<Band>{testBand};
+      
+       Assert.Equal(testList, result);
+     }
 
 
 
