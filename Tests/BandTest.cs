@@ -9,22 +9,38 @@ namespace BandTracker.Objects
   {
 
     public BandTest()
-   {
-     DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=band_tracker_test;Integrated Security=SSPI;";
-   }
+    {
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=band_tracker_test;Integrated Security=SSPI;";
+    }
 
 
 
     [Fact]
     public void Test1_BandGetName()
     {
-      // arrange
+
       Band newBand = new Band("Beattles");
-      // act
+
       string result = newBand.GetName();
-      // assert
+
       Assert.Equal("Beattles", result);
     }
+
+    [Fact]
+    public void Test2_SetName()
+    {
+
+      Band newBand = new Band("Beattles");
+      newBand.SetName("Nirvana");
+
+      string result = newBand.GetName();
+      
+      Assert.Equal("Nirvana", result);
+    }
+
+
+
+
 
   }
 }
