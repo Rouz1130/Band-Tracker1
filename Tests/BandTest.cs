@@ -5,7 +5,7 @@ using System;
 
 namespace BandTracker.Objects
 {
-  public class BandTest
+  public class BandTest : IDisposable
   {
 
     public BandTest()
@@ -75,23 +75,28 @@ namespace BandTracker.Objects
 
 
     [Fact]
-  public void Test7_DeleteOneBand()
+     public void Test6_DeleteOneBand()
+     {
+
+       Band firstBand = new Band("Queen");
+       firstBand.Save();
+
+       Band secondBand = new Band("Rolling Stones");
+       secondBand.Save();
+
+       firstBand.Delete();
+       List<Band> allBands = Band.GetAll();
+       List<Band> afterDeleteFristBand = new List<Band> {secondBand};
+
+       Assert.Equal(afterDeleteFristBand, allBands);
+
+     }
+
+
+    public void Dispose()
   {
-
-    Band firstBand = new Band("Sting");
-    firstBand.Save();
-
-    Band secondBand = new Band("Chilli-peppers");
-    secondBand.Save();
-
-    firstBand.Delete();
-    List<Band> allBands = Band.GetAll();
-    List<Band> afterDeleteFristBand = new List<Band> {secondBand};
-
-    Assert.Equal(afterDeleteFristBand, allBands);
-}
-
-
+    Band.DeleteAll();
+  }
 
   }
 }
