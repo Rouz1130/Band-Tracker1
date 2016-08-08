@@ -19,23 +19,23 @@ namespace BandTracker.Objects
     public void Test1_BandGetName()
     {
 
-      Band newBand = new Band("Metallica");
+      Band newBand = new Band("Sting");
 
       string result = newBand.GetName();
 
-      Assert.Equal("Metallica", result);
+      Assert.Equal("Sting", result);
     }
 
     [Fact]
   public void Test2_SetName()
   {
 
-    Band newBand = new Band("U2");
-    newBand.SetName("U2");
+    Band newBand = new Band("All 4 One");
+    newBand.SetName("All 4 One");
 
     string result = newBand.GetName();
 
-    Assert.Equal("U2", result);
+    Assert.Equal("All 4 One", result);
   }
 
   [Fact]
@@ -54,13 +54,27 @@ namespace BandTracker.Objects
      [Fact]
   public void Test4_FindId()
   {
-    Band newBand = new Band ("Beatles");
+    Band newBand = new Band ("Coldplay");
     newBand.Save();
 
     Band findBand = Band.Find(newBand.GetId());
 
     Assert.Equal(findBand, newBand);
   }
+
+  [Fact]
+    public void Test5_UpdateBand()
+    {
+      Band newBand = new Band("Queen");
+      newBand.Save();
+      newBand.Update("Queen");
+      string result = newBand.GetName();
+
+      Assert.Equal("Queen", result);
+    }
+
+
+
 
   }
 }
