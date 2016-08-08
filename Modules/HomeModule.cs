@@ -1,37 +1,30 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Collections.Generic;
-using Nancy;
-using Nancy.ViewEngines.Razor;
+using Xunit;
 
-namespace HairSalon.Objects
+namespace BandTracker
 {
-  public class HomeModule : NancyModule
+  public class VenueTest : IDisposable
   {
-    public HomeModule()
+    public VenueTest()
     {
-      Get["/"] = _ => {
-        return View["index.cshtml"];
-      };
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=band_tracker_test;Integrated Security=SSPI;";
+    }
 
-      Get["/stylists"] = _ => {
-        List<Stylist> allStylists = Stylist.GetAll();
-        return View["stylists.cshtml", allStylists];
-      };
+    [Fact]
+    public void Test_EmptyDatabase()
+    {
+      //Arrange, Act
+      int result = Venue.GetAll().Count;
+      //Assert
+      Assert.Equal(0, result);
+    }
 
-      Get["/stylists/new"] = _ => {
-        return View["add_stylist.cshtml"];
-      };
-
-      Post["/stylists/new"] = _ => {
-        Stylist newStylist = new Stylist(Request.Form["stylist-name"]);
-        newStylist.Save();
-        List<Stylist> allStylists= Stylist.GetAll();
-        return View["stylists.cshtml", allStylists];
-      };
-
-
-
-
-
+    public void Dispose()
+    {
+      Venue.DeleteAll();
     }
   }
 }
