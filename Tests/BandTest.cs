@@ -9,9 +9,9 @@ namespace BandTracker.Objects
   {
 
     public BandTest()
-    {
-      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=band_tracker_test;Integrated Security=SSPI;";
-    }
+   {
+     DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Band_Tracker_test;Integrated Security=SSPI;";
+   }
 
 
 
@@ -19,40 +19,48 @@ namespace BandTracker.Objects
     public void Test1_BandGetName()
     {
 
-      Band newBand = new Band("Beattles");
+      Band newBand = new Band("Metallica");
 
       string result = newBand.GetName();
 
-      Assert.Equal("Beattles", result);
+      Assert.Equal("Metallica", result);
     }
 
     [Fact]
-    public void Test2_SetName()
-    {
+  public void Test2_SetName()
+  {
 
-      Band newBand = new Band("Beattles");
-      newBand.SetName("Nirvana");
+    Band newBand = new Band("U2");
+    newBand.SetName("U2");
 
-      string result = newBand.GetName();
+    string result = newBand.GetName();
 
-      Assert.Equal("Nirvana", result);
-    }
-
+    Assert.Equal("U2", result);
+  }
 
   [Fact]
-     public void Test3_Save()
-     {
+      public void Test3_SaveBand()
+      {
 
-       Band testBand = new Band("Beatles");
+      Band newBand = new Band("Beatles");
+      newBand.Save();
 
-       testBand.Save();
-       List<Band> result = Band.GetAll();
-       List<Band> testList = new List<Band>{testBand};
-      
-       Assert.Equal(testList, result);
-     }
+      List<Band> allBands = Band.GetAll();
+
+      Assert.Equal(newBand, allBands[0]);
+      }
 
 
+     [Fact]
+  public void Test4_FindId()
+  {
+    Band newBand = new Band ("Beatles");
+    newBand.Save();
+
+    Band findBand = Band.Find(newBand.GetId());
+
+    Assert.Equal(findBand, newBand);
+  }
 
   }
 }
