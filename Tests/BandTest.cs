@@ -74,6 +74,23 @@ namespace BandTracker.Objects
     }
 
 
+    [Fact]
+  public void Test7_DeleteOneBand()
+  {
+
+    Band firstBand = new Band("Sting");
+    firstBand.Save();
+
+    Band secondBand = new Band("Chilli-peppers");
+    secondBand.Save();
+
+    firstBand.Delete();
+    List<Band> allBands = Band.GetAll();
+    List<Band> afterDeleteFristBand = new List<Band> {secondBand};
+
+    Assert.Equal(afterDeleteFristBand, allBands);
+}
+
 
 
   }
