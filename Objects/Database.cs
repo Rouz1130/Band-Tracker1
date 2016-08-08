@@ -1,7 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace HairSaloon
+namespace BandTracker
 {
   public class DB
   {
