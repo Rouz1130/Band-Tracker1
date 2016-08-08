@@ -5,8 +5,12 @@ using System;
 
 namespace BandTracker.Objects
 {
-  public class VenueTest
+  public class VenueTest  : IDisposable
   {
+    public void Dispose()
+   {
+     Venue.DeleteAll();
+   }
 
     public VenueTest()
    {
@@ -63,7 +67,33 @@ namespace BandTracker.Objects
       Assert.Equal(findVenue, newVenue);
     }
 
-    
+    [Fact]
+      public void Test5_UpdateVenue_Database()
+      {
+        Venue newVenue = new Venue("ShowBox");
+        newVenue.Save();
+        newVenue.Update("Acc");
+        string result = newVenue.GetVenueName();
+
+        Assert.Equal("Acc", result);
+      }
+
+      [Fact]
+     public void Test7_DeleteOneVenue()
+     {
+       Venue firstVenue = new Venue("Showbox");
+       firstVenue.Save();
+
+       Venue secondVenue = new Venue("Acc");
+       secondVenue.Save();
+
+       firstVenue.Delete();
+       List<Venue> allVenues = Venue.GetAll();
+       List<Venue> afterDeleteFristVenue = new List<Venue> {secondVenue};
+
+       Assert.Equal(afterDeleteFristVenue, allVenues);
+     }
+
 
 
   }

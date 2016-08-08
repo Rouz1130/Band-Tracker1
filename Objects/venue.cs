@@ -135,5 +135,70 @@ namespace BandTracker.Objects
 
         }
 
+        public void Update(string Name)
+   {
+     SqlConnection conn = DB.Connection();
+     conn.Open();
+
+     SqlCommand cmd = new SqlCommand("UPDATE venues SET name =@venueName output inserted.name WHERE id =@venueId;", conn);
+     SqlParameter VenueNameParameter = new SqlParameter();
+     VenueNameParameter.ParameterName = "@venueName";
+     VenueNameParameter.Value = Name;
+
+     SqlParameter VenueIdParameter = new SqlParameter();
+     VenueIdParameter.ParameterName = "@venueId";
+     VenueIdParameter.Value = this.GetId();
+
+     cmd.Parameters.Add(VenueNameParameter);
+     cmd.Parameters.Add(VenueIdParameter);
+
+     SqlDataReader rdr = cmd.ExecuteReader();
+
+     while(rdr.Read())
+     {
+       this._venueName = rdr.GetString(0);
+     }
+
+     if (rdr != null)
+     {
+       rdr.Close();
+     }
+
+     if (rdr != null)
+     {
+       conn.Close();
+     }
+   }
+
+   public void Delete()
+        {
+          SqlConnection conn = DB.Connection();
+          conn.Open();
+          SqlCommand cmd = new SqlCommand ("DELETE FROM venues WHERE id =@venueId;", conn);
+
+          SqlParameter venueIdParameter = new SqlParameter();
+          venueIdParameter.ParameterName = "@venueId";
+          venueIdParameter.Value=this.GetId();
+
+          cmd.Parameters.Add(venueIdParameter);
+          cmd.ExecuteNonQuery();
+          if (conn !=null)
+          {
+            conn.Close();
+          }
+        }
+
+
+        public static void DeleteAll()
+        {
+          SqlConnection conn = DB.Connection();
+          conn.Open();
+          SqlCommand cmd = new SqlCommand ("DELETE FROM venue;", conn);
+          cmd.ExecuteNonQuery();
+          conn.Close();
+        }
+
+
+
   }
 }
