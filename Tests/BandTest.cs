@@ -14,13 +14,24 @@ namespace BandTracker
     }
 
     [Fact]
-    public void Test_DatabaseEmptyAtFirst()
+    public void Test1_DatabaseEmptyAtFirst()
     {
 
       int result = Band.GetAll().Count;
 
-    
+
       Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Test2_Equal_ReturnsTrueIfNamesAreTheSame()
+    {
+
+      Band firstBand = new Band("GreenDay");
+      Band secondBand = new Band("GreenDay");
+
+
+      Assert.Equal(firstBand, secondBand);
     }
 
     public void Dispose()
