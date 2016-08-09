@@ -35,7 +35,7 @@ namespace BandTracker
     }
 
     [Fact]
-    public void Test_Save_SavesVenueToDatabase()
+    public void Test3_Save_SavesVenueToDatabase()
     {
 
       Venue testVenue = new Venue("Skydome");
@@ -101,6 +101,40 @@ namespace BandTracker
 
      Assert.Equal(testVenueList, resultVenues);
    }
+
+
+    [Fact]
+  public void Test7_AddBand_AddsBandToVenue()
+  {
+
+    Venue testVenue = new Venue("Acc");
+    testVenue.Save();
+
+    Band testBand1 = new Band("Nirvana");
+    testBand1.Save();
+
+    Band testBand2 = new Band("Pearl Jam");
+    testBand2.Save();
+
+
+    testVenue.AddBand(testBand1);
+    testVenue.AddBand(testBand2);
+
+    List<Band> result = testVenue.GetBands();
+    List<Band> testList = new List<Band>{testBand1, testBand2};
+
+
+    Assert.Equal(testList, result);
+  }
+  public void Dispose(
+  {
+    Venue.DeleteAll();
+    Band.DeleteAll();
+  }
+}
+}
+
+
 
 
 
