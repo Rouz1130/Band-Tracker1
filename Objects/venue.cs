@@ -2,51 +2,30 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System;
 
-namespace BandTracker.Objects
+namespace BandTracker
 {
   public class Venue
   {
     private int _id;
-    private string _venueName;
+    private string _name;
 
-    public Venue(string venueName, int id=0)
+    public Venue(string Name, int Id = 0)
     {
-      _id = id;
-      _venueName = venueName;
-    }
-
-    public string GetVenueName()
-    {
-      return _venueName;
+      _id = Id;
+      _name = Name;
     }
 
     public int GetId()
     {
       return _id;
     }
-
-    public void SetName(string newVenueName)
+    public string GetName()
     {
-      _venueName = newVenueName;
+      return _name;
     }
-
-
-    public override bool Equals(System.Object otherVenue)
+    public void SetName(string newName)
     {
-      if (!(otherVenue is Venue))
-      {
-        return false;
-      }
-      else
-      {
-        Venue newVenue = (Venue) otherVenue;
-        return this.GetVenueName().Equals(newVenue.GetVenueName());
-      }
-    }
-
-    public override int GetHashCode()
-    {
-      return this.GetVenueName().GetHashCode();
+      _name = newName;
     }
 
     public static List<Venue> GetAll()
@@ -55,8 +34,9 @@ namespace BandTracker.Objects
 
       SqlConnection conn = DB.Connection();
       conn.Open();
+
       SqlCommand cmd = new SqlCommand("SELECT * FROM venues;", conn);
-      SqlDataReader rdr  = cmd.ExecuteReader();
+      SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
       {
@@ -65,6 +45,7 @@ namespace BandTracker.Objects
         Venue newVenue = new Venue(venueName, venueId);
         allVenues.Add(newVenue);
       }
+
       if (rdr != null)
       {
         rdr.Close();
@@ -73,131 +54,18 @@ namespace BandTracker.Objects
       {
         conn.Close();
       }
+
       return allVenues;
     }
 
-    public void Save()
+    public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-
-      SqlCommand cmd = new SqlCommand("INSERT INTO venues(Name)OUTPUT INSERTED.id VALUES (@venuName);", conn );
-      SqlParameter nameParameter = new SqlParameter();
-      nameParameter.ParameterName = "@venuName";
-      nameParameter.Value = this.GetVenueName();
-      cmd.Parameters.Add(nameParameter);
-      SqlDataReader rdr = cmd.ExecuteReader();
-
-      while(rdr.Read())
-      {
-        this._id = rdr.GetInt32(0);
-      }
-      if (rdr !=null)
-      {
-        rdr.Close();
-      }
-      if (conn !=null)
-      {
-        conn.Close();
-      }
+      SqlCommand cmd = new SqlCommand("DELETE FROM venues;", conn);
+      cmd.ExecuteNonQuery();
+      conn.Close();
     }
-
-    public static Venue Find(int id)
-        {
-          SqlConnection conn = DB.Connection();
-          conn.Open();
-
-          SqlCommand cmd = new SqlCommand("SELECT * FROM venues WHERE id = @venueId;", conn);
-          SqlParameter venueIdParameter = new SqlParameter();
-          venueIdParameter.ParameterName =  "@venueId";
-          venueIdParameter.Value = id.ToString();
-          cmd.Parameters.Add(venueIdParameter);
-          SqlDataReader rdr = cmd.ExecuteReader();
-
-          int findVenueId = 0;
-          string findVenueName = null;
-          while(rdr.Read())
-          {
-            findVenueId = rdr.GetInt32(0);
-            findVenueName = rdr.GetString(1);;
-          }
-          Venue findVenue = new Venue(findVenueName,findVenueId);
-
-          if (rdr != null)
-          {
-            rdr.Close();
-          }
-          if (conn != null)
-          {
-            conn.Close();
-          }
-          return findVenue;
-
-        }
-
-        public void Update(string Name)
-   {
-     SqlConnection conn = DB.Connection();
-     conn.Open();
-
-     SqlCommand cmd = new SqlCommand("UPDATE venues SET name =@venueName output inserted.name WHERE id =@venueId;", conn);
-     SqlParameter VenueNameParameter = new SqlParameter();
-     VenueNameParameter.ParameterName = "@venueName";
-     VenueNameParameter.Value = Name;
-
-     SqlParameter VenueIdParameter = new SqlParameter();
-     VenueIdParameter.ParameterName = "@venueId";
-     VenueIdParameter.Value = this.GetId();
-
-     cmd.Parameters.Add(VenueNameParameter);
-     cmd.Parameters.Add(VenueIdParameter);
-
-     SqlDataReader rdr = cmd.ExecuteReader();
-
-     while(rdr.Read())
-     {
-       this._venueName = rdr.GetString(0);
-     }
-
-     if (rdr != null)
-     {
-       rdr.Close();
-     }
-
-     if (rdr != null)
-     {
-       conn.Close();
-     }
-   }
-
-   public void Delete()
-        {
-          SqlConnection conn = DB.Connection();
-          conn.Open();
-          SqlCommand cmd = new SqlCommand ("DELETE FROM venues WHERE id =@venueId;", conn);
-
-          SqlParameter venueIdParameter = new SqlParameter();
-          venueIdParameter.ParameterName = "@venueId";
-          venueIdParameter.Value=this.GetId();
-
-          cmd.Parameters.Add(venueIdParameter);
-          cmd.ExecuteNonQuery();
-          if (conn !=null)
-          {
-            conn.Close();
-          }
-        }
-
-
-        public static void DeleteAll()
-        {
-          SqlConnection conn = DB.Connection();
-          conn.Open();
-          SqlCommand cmd = new SqlCommand ("DELETE FROM venue;", conn);
-          cmd.ExecuteNonQuery();
-          conn.Close();
-        }
-
 
 
   }
