@@ -175,41 +175,44 @@ namespace BandTracker
         conn.Close();
       }
     }
-    //
-    // public List<Band> GetBands()
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //
-    //   SqlCommand cmd = new SqlCommand("SELECT bands.* FROM venues JOIN venues_bands ON (venues.id = venues_bands.venue_id) JOIN bands ON (venues_bands.band_id = bands.id) WHERE venues.id = @VenueId",conn);
-    //
-    //   SqlParameter venueIdParameter = new SqlParameter();
-    //   venueIdParameter.ParameterName= "@VenueId";
-    //   venueIdParameter.Value=this.GetId();
-    //   cmd.Parameters.Add(venueIdParameter);
-    //
-    //   SqlDataReader rdr = cmd.ExecuteReader();
-    //   List<Band> bands = new List<Band> {};
-    //
-    //   while(rdr.Read())
-    //   {
-    //     int bandId = rdr.GetInt32(0);
-    //     string bandName = rdr.GetString(1);
-    //     Band newBand = new Band(bandName, bandId);
-    //     bands.Add(newBand);
-    //   }
-    //
-    //   if(rdr !=null)
-    //   {
-    //     rdr.Close();
-    //   }
-    //
-    //   if (conn != null)
-    //   {
-    //     conn.Close();
-    //   }
-    //   return bands;
-    // }
+
+    public List<Band> GetBands()
+  {
+    SqlConnection conn = DB.Connection();
+    conn.Open();
+
+    SqlCommand cmd = new SqlCommand("SELECT bands.* FROM venues JOIN venues_bands ON (venues.id = venues_bands.venue_id) JOIN bands ON (venues_bands.band_id = bands.id) WHERE venues.id = @VenueId",conn);
+
+    SqlParameter venueIdParameter = new SqlParameter();
+    venueIdParameter.ParameterName= "@VenueId";
+    venueIdParameter.Value=this.GetId();
+    cmd.Parameters.Add(venueIdParameter);
+
+    SqlDataReader rdr = cmd.ExecuteReader();
+    List<Band> bands = new List<Band> {};
+
+    while(rdr.Read())
+    {
+      int bandId = rdr.GetInt32(0);
+      string bandName = rdr.GetString(1);
+      Band newBand = new Band(bandName, bandId);
+      bands.Add(newBand);
+    }
+
+    if(rdr !=null)
+    {
+      rdr.Close();
+    }
+
+    if (conn != null)
+    {
+      conn.Close();
+    }
+    return bands;
+  }
+
+
+
 
     public static void DeleteAll()
     {
