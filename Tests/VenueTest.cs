@@ -19,8 +19,19 @@ namespace BandTracker
 
       int result = Venue.GetAll().Count;
 
-    
+
       Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Test2_Equal_ReturnsTrueForSameName()
+    {
+
+      Venue firstVenue = new Venue("Skydome");
+      Venue secondVenue = new Venue("Skydome");
+
+
+      Assert.Equal(firstVenue, secondVenue);
     }
 
     public void Dispose()
