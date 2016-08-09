@@ -66,7 +66,7 @@ namespace BandTracker
 
 
     [Fact]
-    public void Test_Find_FindsVenueInDatabase()
+    public void Test5_Find_FindsVenueInDatabase()
     {
 
       Venue testVenue = new Venue("Skydome");
@@ -79,6 +79,28 @@ namespace BandTracker
       Assert.Equal(testVenue, foundVenue);
     }
 
+
+
+    [Fact]
+   public void Test6_Delete_DeletesVenueFromDatabase()
+   {
+
+     string name1 = "Skydome";
+     Venue testVenue1 = new Venue(name1);
+     testVenue1.Save();
+
+     string name2 = "Skydome";
+     Venue testVenue2 = new Venue(name2);
+     testVenue2.Save();
+
+
+     testVenue1.Delete();
+     List<Venue> resultVenues = Venue.GetAll();
+     List<Venue> testVenueList = new List<Venue> {testVenue2};
+
+
+     Assert.Equal(testVenueList, resultVenues);
+   }
 
 
 
