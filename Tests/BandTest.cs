@@ -101,6 +101,25 @@ namespace BandTracker
    }
 
 
+   [Fact]
+    public void Test7_GetVenues_ReturnsBandVenues()
+    {
+      Band testBand = new Band("The Doors");
+      testBand.Save();
+
+      Venue testVenue1 = new Venue("Acc");
+      testVenue1.Save();
+
+      Venue testVenue2 = new Venue("O2");
+      testVenue2.Save();
+
+      testBand.AddVenue(testVenue1);
+      List<Venue> result = testBand.GetVenues();
+      List<Venue> testList = new List<Venue> {testVenue};
+
+
+      Assert.Equal(testList, result);
+    }
 
 
     public void Dispose()
