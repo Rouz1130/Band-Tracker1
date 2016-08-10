@@ -60,80 +60,80 @@ namespace BandTracker
 
     public override bool Equals(System.Object otherBand)
     {
-        if (!(otherBand is Band))
-        {
-          return false;
-        }
-        else
-        {
-          Band newBand = (Band) otherBand;
-          bool idEquality = this.GetId() == newBand.GetId();
-          bool nameEquality = this.GetName() == newBand.GetName();
-          return (idEquality && nameEquality);
-        }
+      if (!(otherBand is Band))
+      {
+        return false;
+      }
+      else
+      {
+        Band newBand = (Band) otherBand;
+        bool idEquality = this.GetId() == newBand.GetId();
+        bool nameEquality = this.GetName() == newBand.GetName();
+        return (idEquality && nameEquality);
+      }
     }
 
     public void Save()
-  {
-    SqlConnection conn = DB.Connection();
-    conn.Open();
-
-    SqlCommand cmd = new SqlCommand("INSERT INTO bands (name) OUTPUT INSERTED.id VALUES (@BandName);", conn);
-
-    SqlParameter nameParameter = new SqlParameter();
-    nameParameter.ParameterName = "@BandName";
-    nameParameter.Value = this.GetName();
-    cmd.Parameters.Add(nameParameter);
-    SqlDataReader rdr = cmd.ExecuteReader();
-
-    while(rdr.Read())
     {
-      this._id = rdr.GetInt32(0);
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO bands (name) OUTPUT INSERTED.id VALUES (@BandName);", conn);
+
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@BandName";
+      nameParameter.Value = this.GetName();
+      cmd.Parameters.Add(nameParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
     }
-    if (rdr != null)
+
+    public static Band Find(int id)
     {
-      rdr.Close();
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM bands WHERE id = @BandId;", conn);
+      SqlParameter bandIdParameter = new SqlParameter();
+      bandIdParameter.ParameterName = "@BandId";
+      bandIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(bandIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundBandId = 0;
+      string foundBandName = null;
+
+      while(rdr.Read())
+      {
+        foundBandId = rdr.GetInt32(0);
+        foundBandName = rdr.GetString(1);
+      }
+      Band foundBand = new Band(foundBandName, foundBandId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundBand;
     }
-    if(conn != null)
-    {
-      conn.Close();
-    }
-  }
 
-  public static Band Find(int id)
-   {
-     SqlConnection conn = DB.Connection();
-     conn.Open();
-
-     SqlCommand cmd = new SqlCommand("SELECT * FROM bands WHERE id = @BandId;", conn);
-     SqlParameter bandIdParameter = new SqlParameter();
-     bandIdParameter.ParameterName = "@BandId";
-     bandIdParameter.Value = id.ToString();
-     cmd.Parameters.Add(bandIdParameter);
-     SqlDataReader rdr = cmd.ExecuteReader();
-
-     int foundBandId = 0;
-     string foundBandName = null;
-
-     while(rdr.Read())
-     {
-       foundBandId = rdr.GetInt32(0);
-       foundBandName = rdr.GetString(1);
-     }
-     Band foundBand = new Band(foundBandName, foundBandId);
-
-     if (rdr != null)
-     {
-       rdr.Close();
-     }
-     if (conn != null)
-     {
-       conn.Close();
-     }
-     return foundBand;
-   }
-
-   public void AddVenue(Venue newVenue)
+    public void AddVenue(Venue newVenue)
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
@@ -193,14 +193,24 @@ namespace BandTracker
       return venues;
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
+      SqlCommand cmd = new SqlCommand("DELETE FROM bands WHERE id = @BandId; DELETE FROM venues_bands WHERE band_id = @BandId;", conn);
+      SqlParameter bandIdParameter = new SqlParameter();
+      bandIdParameter.ParameterName = "@BandId";
+      bandIdParameter.Value = this.GetId();
 
+      cmd.Parameters.Add(bandIdParameter);
+      cmd.ExecuteNonQuery();
 
-
-
-
-
-
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
 
 
     public static void DeleteAll()

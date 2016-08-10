@@ -80,81 +80,98 @@ namespace BandTracker
     }
 
 
+    [Fact]
+    public void Test6_Delete_DeletesVenueFromDatabase()
+    {
+
+      string name1 = "Skydome";
+      Venue testVenue1 = new Venue(name1);
+      testVenue1.Save();
+
+      string name2 = "Skydome";
+      Venue testVenue2 = new Venue(name2);
+      testVenue2.Save();
+
+
+      testVenue1.Delete();
+      List<Venue> resultVenues = Venue.GetAll();
+      List<Venue> testVenueList = new List<Venue> {testVenue2};
+
+
+      Assert.Equal(testVenueList, resultVenues);
+    }
+
 
     [Fact]
-   public void Test6_Delete_DeletesVenueFromDatabase()
-   {
+    public void Test7_AddBand_AddsBandToVenue()
+    {
 
-     string name1 = "Skydome";
-     Venue testVenue1 = new Venue(name1);
-     testVenue1.Save();
+      Venue testVenue = new Venue("Acc");
+      testVenue.Save();
 
-     string name2 = "Skydome";
-     Venue testVenue2 = new Venue(name2);
-     testVenue2.Save();
+      Band testBand1 = new Band("Nirvana");
+      testBand1.Save();
 
-
-     testVenue1.Delete();
-     List<Venue> resultVenues = Venue.GetAll();
-     List<Venue> testVenueList = new List<Venue> {testVenue2};
+      Band testBand2 = new Band("Pearl Jam");
+      testBand2.Save();
 
 
-     Assert.Equal(testVenueList, resultVenues);
-   }
+      testVenue.AddBand(testBand1);
+      testVenue.AddBand(testBand2);
+
+      List<Band> result = testVenue.GetBands();
+      List<Band> testList = new List<Band>{testBand1, testBand2};
+
+
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void Test8_GetBands_ReturnsAllVenueBands()
+    {
+
+      Venue testVenue = new Venue("Tacoma dome");
+      testVenue.Save();
+
+      Band testBand1 = new Band("AC/DC");
+      testBand1.Save();
+
+      Band testBand2 = new Band("the Beatles");
+      testBand2.Save();
+
+
+      testVenue.AddBand(testBand1);
+      List<Band> savedBands = testVenue.GetBands();
+      List<Band> testList = new List<Band> {testBand1};
+
+      Assert.Equal(testList, savedBands);
+    }
 
 
     [Fact]
-  public void Test7_AddBand_AddsBandToVenue()
-  {
+    public void Test_Delete_DeletesOneVenuesFromDatabase()
+    {
 
-    Venue testVenue = new Venue("Acc");
-    testVenue.Save();
+      Band testBand = new Band("Sting");
+      testBand.Save();
 
-    Band testBand1 = new Band("Nirvana");
-    testBand1.Save();
+      Venue testVenue = new Venue("Rose Garden");
+      testVenue.Save();
 
-    Band testBand2 = new Band("Pearl Jam");
-    testBand2.Save();
+      testVenue.AddBand(testBand);
+      testVenue.Delete();
+
+      List<Venue> resultBandVenues = testBand.GetVenues();
+      List<Venue> testBandVenues = new List<Venue> {};
+
+      Assert.Equal(testBandVenues, resultBandVenues);
+    }
 
 
-    testVenue.AddBand(testBand1);
-    testVenue.AddBand(testBand2);
-
-    List<Band> result = testVenue.GetBands();
-    List<Band> testList = new List<Band>{testBand1, testBand2};
-
-
-    Assert.Equal(testList, result);
+    public void Dispose()
+    {
+      Venue.DeleteAll();
+      Band.DeleteAll();
+    }
   }
-
-  [Fact]
-  public void Test8_GetBands_ReturnsAllVenueBands()
-  {
-
-    Venue testVenue = new Venue("Tacoma dome");
-    testVenue.Save();
-
-    Band testBand1 = new Band("AC/DC");
-    testBand1.Save();
-
-    Band testBand2 = new Band("the Beatles");
-    testBand2.Save();
-
-
-    testVenue.AddBand(testBand1);
-    List<Band> savedBands = testVenue.GetBands();
-    List<Band> testList = new List<Band> {testBand1};
-
-    Assert.Equal(testList, savedBands);
-  }
-
-
-
-
-  public void Dispose()
-  {
-    Venue.DeleteAll();
-    Band.DeleteAll();
-  }
-}
 }

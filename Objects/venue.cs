@@ -152,6 +152,7 @@ namespace BandTracker
       }
     }
 
+
     public void AddBand(Band newBand)
     {
       SqlConnection conn = DB.Connection();
@@ -175,6 +176,7 @@ namespace BandTracker
         conn.Close();
       }
     }
+
 
     public List<Band> GetBands()
   {
@@ -210,7 +212,6 @@ namespace BandTracker
     }
     return bands;
   }
-
 
 
 
