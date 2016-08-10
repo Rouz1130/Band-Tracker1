@@ -115,7 +115,7 @@ namespace BandTracker
 
       testBand.AddVenue(testVenue1);
       List<Venue> result = testBand.GetVenues();
-      List<Venue> testList = new List<Venue> {testVenue};
+      List<Venue> testList = new List<Venue> {testVenue1};
 
 
       Assert.Equal(testList, result);
